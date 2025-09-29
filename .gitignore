@@ -1,5 +1,5 @@
 # Cache do Python
-__pycache__/
+backend/__pycache__/
 
 # Dependências do Node.js
-node_modules/
+frontend/node_modules/
