@@ -10,7 +10,8 @@ services:
       - ./backend:/app
     command: sh -c "python create_db.py && flask run --host=0.0.0.0"
     depends_on:
-      - database
+      database: # <-- Alteração aqui
+        condition: service_healthy # <-- Alteração aqui
 
   frontend:
     build: ./frontend
@@ -19,7 +20,7 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
-    command: sh -c "npm install && npm start"
+    command: npm start # <-- Alteração recomendada
     depends_on:
       - backend
 
@@ -34,3 +35,9 @@ services:
       - "5432:5432"
     volumes:
       - ./database/data:/var/lib/postgresql/data
+    # Adicione as linhas abaixo
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d organizacao_financeira_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
