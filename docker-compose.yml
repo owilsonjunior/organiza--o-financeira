@@ -10,8 +10,8 @@ services:
       - ./backend:/app
     command: sh -c "python create_db.py && flask run --host=0.0.0.0"
     depends_on:
-      database: # <-- Alteração aqui
-        condition: service_healthy # <-- Alteração aqui
+      database:
+        condition: service_healthy
 
   frontend:
     build: ./frontend
@@ -20,7 +20,8 @@ services:
       - "3000:3000"
     volumes:
       - ./frontend:/app
-    command: npm start # <-- Alteração recomendada
+      - /app/node_modules
+    command: npm start
     depends_on:
       - backend
 
